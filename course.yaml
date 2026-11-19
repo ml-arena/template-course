@@ -1,0 +1,28 @@
+# The course, its modules and its lessons. Paths are relative to this file.
+course:
+  name: "My first course"
+  slug: my-first-course        # the course's identity and URL: ml-arena.com/courses/<slug>. Change it.
+  description: "A short course kept in a GitHub repository."
+  visibility: private          # private | unlisted | public
+  instructor_name: "Your name"
+  start_date: 2027-01-11       # required when the push creates the course
+  end_date: 2027-06-30
+
+modules:
+  - title: "Introduction"
+    slug: intro
+    summary: "What this course is and how to follow it."
+    # challenges:              # challenges attached to the module, by slug
+    #   - slug: your-challenge-slug
+    lessons:
+      - title: "Welcome"
+        slug: welcome
+        file: intro/welcome.md
+        is_published: true     # false (the default) hides the lesson from students
+        estimated_minutes: 5
+        children:              # sub-lessons, one level deep
+          - title: "First steps"
+            slug: first-steps
+            file: intro/first-steps.md
+            is_published: true
+            estimated_minutes: 10

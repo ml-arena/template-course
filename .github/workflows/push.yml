@@ -1,0 +1,26 @@
+name: Push course to ML-Arena
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["README.md", "LICENSE", ".gitignore"]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Print the plan, change nothing
+        type: boolean
+        default: true
+
+permissions:
+  id-token: write   # the job proves its identity to ML-Arena: no secret to store
+  contents: read
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ml-arena/mlarena-action@v1
+        with:
+          command: course-push
+          dry-run: ${{ inputs.dry_run || false }}
