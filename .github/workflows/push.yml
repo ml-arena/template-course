@@ -1,9 +1,17 @@
+# Pushes the course (course.yaml and the lessons it names) to ML-Arena.
+#
+# Runs on every commit to main, and when you click "Run workflow" in the
+# Actions tab. A run from the button is a dry run unless you untick dry_run:
+# it prints the plan (what would be created, updated or orphaned) and changes
+# nothing. The plan of every run is in its summary.
 name: Push course to ML-Arena
 
 on:
   push:
     branches: [main]
-    paths-ignore: ["README.md", "LICENSE", ".gitignore"]
+    # No path filter on purpose: GitHub skips a filtered workflow when a commit
+    # changes more than 300 files (adding a whole course, moving its images). A
+    # commit that changes no lesson pushes nothing: its plan reads "unchanged".
   workflow_dispatch:
     inputs:
       dry_run:
@@ -13,7 +21,7 @@ on:
 
 permissions:
   id-token: write   # the job proves its identity to ML-Arena: no secret to store
-  contents: read
+  contents: read    # to check out the repository
 
 jobs:
   push:
@@ -23,4 +31,10 @@ jobs:
       - uses: ml-arena/mlarena-action@v1
         with:
           command: course-push
+          # A push to main has no inputs, so it applies the course for real.
           dry-run: ${{ inputs.dry_run || false }}
+          # One repository, several courses: the folder of this course.
+          # path: my-course
+          # Delete the lessons removed from course.yaml, with their students'
+          # progress (default: unpublish them, keep the progress).
+          # prune: true

@@ -1,26 +1,32 @@
-# The course, its modules and its lessons. Paths are relative to this file.
+# The course, its modules and its lessons. Each commit on main pushes this file
+# and the lessons it names to ML-Arena. Paths here (file, cover) start from the
+# folder of this file; a link inside a lesson starts from the lesson's folder.
+# The full list of keys: README.md.
 course:
-  name: "My first course"
-  slug: my-first-course        # the course's identity and URL: ml-arena.com/courses/<slug>. Change it.
-  description: "A short course kept in a GitHub repository."
-  visibility: private          # private | unlisted | public
-  instructor_name: "Your name"
-  start_date: 2027-01-11       # required when the push creates the course
-  end_date: 2027-06-30
+  name: "My first course"      # required
+  slug: my-first-course        # required: the course's identity and URL, ml-arena.com/courses/<slug>. Change it
+  description: "A short course kept in a GitHub repository."   # optional Markdown, shown on the course page
+  visibility: private          # private (default) | unlisted | public (listed in the catalog)
+  instructor_name: "Your name" # optional
+  start_date: 2027-01-11       # YYYY-MM-DD, required when the push creates the course
+  end_date: 2027-06-30         # YYYY-MM-DD, required when the push creates the course
+  # cover: cover.png           # optional cover image (PNG, JPEG, GIF or WebP)
 
 modules:
-  - title: "Introduction"
-    slug: intro
-    summary: "What this course is and how to follow it."
-    # challenges:              # challenges attached to the module, by slug
-    #   - slug: your-challenge-slug
+  - title: "Introduction"      # required
+    slug: intro                # required: the module's identity. Rename with renamed_from: <old slug>
+    summary: "What this course is and how to follow it."   # optional
+    # is_published: true       # default true; false hides the whole module from students
+    # challenges:              # optional: the challenges attached to the module, by slug.
+    #   - slug: your-challenge-slug   # Left out, the challenges attached in the Studio stay
+    #     pass_threshold: 0.8  # optional: the score that counts as passed
     lessons:
-      - title: "Welcome"
-        slug: welcome
-        file: intro/welcome.md
-        is_published: true     # false (the default) hides the lesson from students
-        estimated_minutes: 5
-        children:              # sub-lessons, one level deep
+      - title: "Welcome"       # required
+        slug: welcome          # required: the lesson's identity (students' progress follows it)
+        file: intro/welcome.md # the lesson's Markdown (or body_md: inline text)
+        is_published: true     # default false: a draft, hidden from students
+        estimated_minutes: 5   # optional, shown to students
+        children:              # optional sub-lessons, one level deep
           - title: "First steps"
             slug: first-steps
             file: intro/first-steps.md
