@@ -1,0 +1,56 @@
+# Pushes the course (course.yaml, its lessons and its challenge folders) to
+# ML-Arena with the course's key, the repository secret MLARENA_COURSE_KEY
+# (the course's Settings › GitHub creates it).
+#
+# Runs on every commit to main, and when you click "Run workflow" in the
+# Actions tab. A run from the button is a dry run unless you untick dry_run:
+# it prints the plan (what would be created, updated or removed) and changes
+# nothing. While the course is "connecting", every run is a plan. The plan of
+# every run is in its summary, and in the course's Settings › GitHub.
+name: Push to ML-Arena
+
+on:
+  push:
+    branches: [main]
+    # No path filter on purpose: GitHub skips a filtered workflow when a commit
+    # changes more than 300 files (adding a whole course, moving its images). A
+    # commit that changes nothing the course holds reports "unchanged".
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Print the plan, change nothing
+        type: boolean
+        default: true
+
+permissions:
+  contents: read    # to check out the repository; the course key is the credential
+
+# One push at a time: the last commit wins, and a run never overtakes the one
+# before it.
+concurrency:
+  group: ml-arena
+  cancel-in-progress: false
+
+jobs:
+  push:
+    # Not on a template repository (ml-arena/template-* itself): only a
+    # repository made from it pushes.
+    if: ${{ !github.event.repository.is_template }}
+    runs-on: ubuntu-latest
+    # Harden it (README.md): keep the key in an Environment that only main
+    # reaches, then uncomment.
+    # environment: ml-arena
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ml-arena/mlarena-action@v2
+        env:
+          MLARENA_COURSE_KEY: ${{ secrets.MLARENA_COURSE_KEY }}
+        with:
+          command: course-push
+          # A push to main has no inputs, so it applies the course for real.
+          dry-run: ${{ inputs.dry_run || false }}
+          # One repository, several courses: the folder of this course.
+          # path: my-course
+          # Delete the lessons removed from course.yaml, with their students'
+          # progress (default: unpublish them, keep the progress).
+          # prune: true

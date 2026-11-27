@@ -1,0 +1,17 @@
+#:schema https://ml-arena.com/api/creator_challenge/config_schema.json
+# The challenge's config and scoring. In a course edited on GitHub the whole
+# folder is the challenge: what this file says is what the platform holds.
+
+# The card's blurb, on the course page and the challenge list.
+description = "Predict the sale price of 40 houses; scored by RMSE."
+# The one file a participant uploads.
+submission_filename = "submission.csv"
+# env.py scores against it: the challenge cannot start until it is in the folder.
+required_files = ["y_test.csv"]
+# The leaderboard: env.py's score is an RMSE, the smallest ranks first.
+metrics = [
+  { key = "rmse", label = "RMSE", source = "score", order = "asc", precision = 2, is_ranking = true },
+]
+# 40 rows to score: a run takes seconds.
+simulation_timeout_sec = 120
+max_active_submissions_per_participant = 5

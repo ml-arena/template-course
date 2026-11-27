@@ -1,15 +1,13 @@
-# The course, its modules and its lessons. Each commit on main pushes this file
-# and the lessons it names to ML-Arena. Paths here (file, cover) start from the
-# folder of this file; a link inside a lesson starts from the lesson's folder.
-# The full list of keys: README.md.
+# The course: its modules, its lessons and its challenges. Each commit on main
+# pushes this folder to ML-Arena with the course's key (the repository secret
+# MLARENA_COURSE_KEY): the key names the course, so this file needs no slug.
+# Paths here (file, folder, cover) start from the folder of this file; a link
+# inside a lesson starts from the lesson's folder. Visibility and dates are set
+# in the console (Settings), not here. Every key: README.md.
 course:
-  name: "My first course"      # required
-  slug: my-first-course        # required: the course's identity and URL, ml-arena.com/courses/<slug>. Change it
+  # name: "My first course"    # optional: left out, the course keeps the name typed in ML-Arena
   description: "A short course kept in a GitHub repository."   # optional Markdown, shown on the course page
-  visibility: private          # private (default) | unlisted | public (listed in the catalog)
-  instructor_name: "Your name" # optional
-  start_date: 2027-01-11       # YYYY-MM-DD, required when the push creates the course
-  end_date: 2027-06-30         # YYYY-MM-DD, required when the push creates the course
+  # code: "ML101"              # optional
   # cover: cover.png           # optional cover image (PNG, JPEG, GIF or WebP)
 
 modules:
@@ -17,18 +15,14 @@ modules:
     slug: intro                # required: the module's identity. Rename with renamed_from: <old slug>
     summary: "What this course is and how to follow it."   # optional
     # is_published: true       # default true; false hides the whole module from students
-    # challenges:              # optional: the challenges attached to the module, by slug.
-    #   - slug: your-challenge-slug   # Left out, the challenges attached in the Studio stay
-    #     pass_threshold: 0.8  # optional: the score that counts as passed
     lessons:
       - title: "Welcome"       # required
         slug: welcome          # required: the lesson's identity (students' progress follows it)
         file: intro/welcome.md # the lesson's Markdown (or body_md: inline text)
         is_published: true     # default false: a draft, hidden from students
-        estimated_minutes: 5   # optional, shown to students
-        children:              # optional sub-lessons, one level deep
-          - title: "First steps"
-            slug: first-steps
-            file: intro/first-steps.md
-            is_published: true
-            estimated_minutes: 10
+        estimated_minutes: 10  # optional, shown to students
+    challenges:                # the challenges of this module, in this order
+      - name: "House prices"   # required: the challenge's identity in the course
+        folder: challenges/house-prices   # its files: env.py, challenge.toml, data/, benchmark/…
+        kernel_version: file_v1           # file_v1 | flex_v1 | chat_v1 | exercise_v1
+        # pass_threshold: 10   # optional: the score that counts as passed
